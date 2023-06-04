@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+</head>
+
+<body>
+    <h1>Log Data from Server</h1>
+
+    <p id="logData"></p>
+
+    <!-- Moved the script tag to the end of the body for faster page loading -->
+    <script type="text/javascript">
+        // Use DOMContentLoaded event for waiting until the DOM is fully loaded
+        document.addEventListener('DOMContentLoaded', () => {
+            const socket = io();
+            const logEl = document.getElementById("logData");
+
+            // connection with web-socket server
+            socket.on("connect", () => {
+                console.log("connected to socket server");
+            });
+
+            // message listener from server
+            socket.on("newMessage", (newMessage) => {
+                console.log("log file updated");
+                logEl.innerHTML += `<div>${newMessage}</div>`;
+            });
+
+            // emit message to server
+            /*socket.emit("createMessage", {
+                name: "subham-client",
+                designation: "athlete",
+                from: "client"
+            });*/
+
+            // when disconnected from server
+            socket.on("disconnect", () => {
+                console.log("Disconnected from socket server");
+            });
+        });
+    </script>
+    
+    <!-- Moved the script tag to the end of the body for faster page loading -->
+    <script src="/socket.io/socket.io.js"></script>
+</body>
+
+</html>
